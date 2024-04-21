@@ -32,6 +32,7 @@ function main() {
 	const scene = new THREE.Scene();
 	// [[ SKY COLOR ]]
 	scene.background = new THREE.Color( 'lightblue' ); 
+	const cones = [] // array to animate the cone 
 	//#endregion
 
 	//#endregion
@@ -115,9 +116,80 @@ function main() {
 	}
 	//#endregion
 
-	//#region [[MATERIAL AND OBJECT LOADER]]
+	//#region [[ PRIMARY SHAPE LOADER ]]
 	{
+		//#region base box sizes
+		const boxWidth = 1;
+		const boxHeight = 1;
+		const boxDepth = 1;
+		
+		//#endregion
+		//#region base cylinder sizes
+		const cylinderHeight = 5;
+		const cylinderRadTop = 1;
+		const cylinderRadBot = 1;
+		const cylinderSegFaces = 10;
+		//#endregion
+		//#region base cone sizes
+		const coneRad = 0.5;
+		const coneHeight = 1.5;
+		const coneRadSeg = 10;
+		
+		//#endregion
 
+		// make instances of all shapes and put them in this array
+		const shapes = [
+			makeCube(boxWidth+1,boxHeight,boxDepth+0.5,4,0.5,0xe3e2d4), // 3rd place
+			makeCube(boxWidth+1,boxHeight+1,boxDepth+0.5,-4,0.5,0xe3e2d4), // 2nd place
+			makeCube(boxWidth+1,boxHeight+2,boxDepth+0.5,0,0.5,0xe3e2d4), // 1st place
+			// makeInstance(cylinder, 0x8844aa, -4), // microphone
+			// makeInstance(cylinder, 0x8844aa, -4), // microphone
+			makeCone(coneRad,coneHeight,coneRadSeg,1,3, 0xc9c441), // trophy 
+		];
+		// create instances of cube objects
+		function makeCube(w, h, d, x, y, color) {
+			// make dat cube 
+			const geometry = new THREE.BoxGeometry( w, h, d );
+			const material = new THREE.MeshPhongMaterial( { color } );
+			const cube = new THREE.Mesh(geometry, material);
+			// add shape to the scene
+			scene.add(cube);
+			cube.position.x = x;
+			cube.position.y = y
+			
+			return cube;
+		}
+		function makeCylinder(rT, rB, h, s, x, y, color) {
+			// make dat cube 
+			const geometry = new THREE.CylinderGeometry( rT, rB, h, s ); 
+			const material = new THREE.MeshPhongMaterial( { color } );
+			const cylinder = new THREE.Mesh(geometry, material);
+			// add shape to the scene
+			scene.add(cylinder);
+			cylinder.position.x = x;
+			cylinder.position.y = y
+			
+			return cylinder;
+		}
+		function makeCone(r, h, s, x, y, color) {
+			// make dat cube 
+			const geometry = new THREE.ConeGeometry( r, h, s);
+			const material = new THREE.MeshPhongMaterial( { color } );
+			const cone = new THREE.Mesh(geometry, material);
+			// add shape to the scene
+			scene.add(cone);
+			cone.position.x = x;
+			cone.position.y = y
+			cones.push(cone);
+			
+			return cone;
+		}
+	}
+	//#endregion
+
+	//#region [[ 3D MATERIAL AND 3D OBJECT LOADER]]
+	{
+		// [[ FIRST PLACE FROG]]
 		const mtlLoader = new MTLLoader();
 		mtlLoader.load( 'obj/froggy.mtl', ( mtl ) => {
 
@@ -125,26 +197,53 @@ function main() {
 			const objLoader = new OBJLoader();
 			objLoader.setMaterials( mtl );
 			objLoader.load( 'obj/froggy.obj', ( root ) => {
+			root.position.y += 2;
+			scene.add( root );
+			//root.posiiton.z +=3;
+			// compute the box that contains all the stuff
+			// from root and below
+			const box = new THREE.Box3().setFromObject( root );
 
-				scene.add( root );
-				// compute the box that contains all the stuff
-				// from root and below
-				const box = new THREE.Box3().setFromObject( root );
+			const boxSize = box.getSize( new THREE.Vector3() ).length();
+			const boxCenter = box.getCenter( new THREE.Vector3() );
 
-				const boxSize = box.getSize( new THREE.Vector3() ).length();
-				const boxCenter = box.getCenter( new THREE.Vector3() );
+			// set the camera to frame the box
+			frameArea( boxSize * 1.5, boxSize, boxCenter, camera );
 
-				// set the camera to frame the box
-				frameArea( boxSize * 1.2, boxSize, boxCenter, camera );
-
-				// update the Trackball controls to handle the new size
-				controls.maxDistance = boxSize * 10;
-				controls.target.copy( boxCenter );
-				controls.update();
-				} );
+			// update the Trackball controls to handle the new size
+			controls.maxDistance = boxSize * 10;
+			controls.target.copy( boxCenter );
+			controls.update();
+			} );
 
 		} );
+		// [[ SECOND PLACE FROG]]
+		const mtlLoader2 = new MTLLoader();
+		mtlLoader2.load( 'obj/froggy2.mtl', ( mtl ) => {
 
+			mtl.preload();
+			const objLoader = new OBJLoader();
+			objLoader.setMaterials( mtl );
+			objLoader.load( 'obj/froggy2.obj', ( root ) => {
+				root.position.y += 1.5;
+				root.position.x -=4;
+				scene.add( root );
+			} );
+		} );
+
+		// [[ THIRD PLACE FROG ]]
+		const mtlLoader3 = new MTLLoader();
+		mtlLoader3.load( 'obj/froggy3.mtl', ( mtl ) => {
+
+			mtl.preload();
+			const objLoader = new OBJLoader();
+			objLoader.setMaterials( mtl );
+			objLoader.load( 'obj/froggy3.obj', ( root ) => {
+				root.position.y += 1;
+				root.position.x +=4;
+				scene.add( root );
+			} );
+		} );
 	}
 	//#endregion
 	
@@ -167,7 +266,9 @@ function main() {
 	//#endregion
 
 	//#region [[ RENDER THE SCENE ]]
-	function render() {
+	function render( time ) {
+
+		time *= 0.001;
 
 		if ( resizeRendererToDisplaySize( renderer ) ) {
 
@@ -176,6 +277,16 @@ function main() {
 			camera.updateProjectionMatrix();
 
 		}
+
+        // // rotating the cubs
+		cones.forEach( ( cone, ndx ) => {
+
+			const speed = .2 + ndx * .1;
+			const rot = time * speed;
+			//cone.rotation.x = rot;
+			cone.rotation.y = rot;
+
+		} );
 
 		renderer.render( scene, camera );
 

@@ -48,7 +48,7 @@ function main() {
     scene.add(light);
 
     // // making 3 different cubes, saving them into an array so we can send it to the render in one
-    // const cubes = [
+    // const shapes = [
     //     makeInstance(geometry, 0x44aa88,  0),
     //     makeInstance(geometry, 0x8844aa, -2),
     //     makeInstance(geometry, 0xaa8844,  2),
@@ -88,7 +88,7 @@ function main() {
 
 			const speed = .2 + ndx * .1;
 			const rot = time * speed;
-			cube.rotation.x = rot;
+			//cube.rotation.x = rot;
 			cube.rotation.y = rot;
 
 		} );
@@ -101,15 +101,16 @@ function main() {
 
 	requestAnimationFrame( render );
 
-    // call this function to add multiple boxes to the scene easy
-    // function makeInstance(geometry, color, x) {
-    //     const cube = new THREE.Mesh(geometry, materials);
-    //     scene.add(cube);
+    //call this function to add multiple boxes to the scene easy
+    function makeInstance(geometry, color, x) {
+        const material = new THREE.MeshPhongMaterial( { color } );
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
        
-    //     cube.position.x = x;
+        cube.position.x = x;
        
-    //     return cube;
-    //   }
+        return cube;
+      }
 
     function loadColorTexture( path ) {
         const texture = loader.load( path );
