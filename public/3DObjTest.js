@@ -20,7 +20,7 @@ function main() {
 
 	const scene = new THREE.Scene();
 	scene.background = new THREE.Color( 'black' );
-
+	console.log("test");
 	{
 
 		const planeSize = 40;
