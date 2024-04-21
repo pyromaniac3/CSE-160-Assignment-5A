@@ -14,7 +14,7 @@ function main() {
 	//#region [[ INITIAL SCENE SET UP ]]
 	//#region [[ DEFAULT CAMERA STATS ]] 
 	const fov = 40; // field of view
-	const aspect = 2; // the canvas default
+	const aspect = 600/400; // the canvas default
 	const near = 0.1; 
 	const far = 50;
 	const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
@@ -249,7 +249,7 @@ function main() {
 			const boxCenter = box.getCenter( new THREE.Vector3() );
 
 			// set the camera to frame the box
-			frameArea( boxSize * 1.5, boxSize, boxCenter, camera );
+			frameArea( boxSize * 2.5, boxSize, boxCenter, camera );
 
 			// update the Trackball controls to handle the new size
 			controls.maxDistance = boxSize * 10;
