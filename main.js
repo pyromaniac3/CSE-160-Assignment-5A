@@ -176,8 +176,8 @@ function main() {
 
 		// make instances of all shapes and put them in this array
 	
-		const cube3 = makeCube(boxWidth+1,boxHeight,boxDepth+0.5,4,2.5,third); // 3rd place
-		const cube2 = makeCube(boxWidth+1,boxHeight+1,boxDepth+0.5,-4,2.5,second); // 2nd place
+		const cube3 = makeCube(boxWidth+1,boxHeight,boxDepth+0.5,4,1.5,third); // 3rd place
+		const cube2 = makeCube(boxWidth+1,boxHeight+1,boxDepth+0.5,-4,2,second); // 2nd place
 		const cube1 = makeCube(boxWidth+1,boxHeight+2,boxDepth+0.5,0,2.5,first); // 1st place
 		cylinder = makeCylinder(cylinderRadTop,cylinderRadBot,cylinderHeight,cylinderSegFaces,0,0, 0x8844aa ); // microphone
 		const cone = makeCone(coneRad,coneHeight,coneRadSeg,1,+5, 0xc9c441); // trophy 
@@ -266,7 +266,7 @@ function main() {
 			const objLoader = new OBJLoader();
 			objLoader.setMaterials( mtl );
 			objLoader.load( 'obj/froggy2.obj', ( root ) => {
-				root.position.y += 3.5;
+				root.position.y += 3;
 				root.position.x -=4;	
 				scene.add( root );
 				cylinder.add(root);
@@ -281,7 +281,7 @@ function main() {
 			const objLoader = new OBJLoader();
 			objLoader.setMaterials( mtl );
 			objLoader.load( 'obj/froggy3.obj', ( root ) => {
-				root.position.y += 3;
+				root.position.y += 2;
 				root.position.x +=4;
 				scene.add( root );
 				cylinder.add(root);
