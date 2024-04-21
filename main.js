@@ -120,28 +120,28 @@ function main() {
 	// Texture Loader
 	const loader = new THREE.TextureLoader();
 	const first = [
-		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/1.png')}),
-		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/1.png')}),
+		  new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
 	];
 	const second = [
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/2.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/2.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
   	];
 	const third = [
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/3.png')}),
-		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/3.png')}),
+		new THREE.MeshPhongMaterial({map: loadColorTexture('./textures/basse.png')}),
 	];
 	
 	function loadColorTexture( path ) {
