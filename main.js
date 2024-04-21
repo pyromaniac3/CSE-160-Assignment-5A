@@ -27,12 +27,12 @@ function main() {
     // Texture Loader
     const loader = new THREE.TextureLoader();
     const materials = [
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/akkoxamanda.png')}),
+        // new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/akkoxamanda.png')}),
         new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/ladynoir.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/mammamia.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/oz.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/seal.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/koi.png')}),
+        // new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/mammamia.png')}),
+        // new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/oz.png')}),
+        // new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/seal.png')}),
+        // new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/koi.png')}),
       ];
 
 

@@ -10,7 +10,7 @@ function main() {
 	// [[ WEBGL CANVAS SET UP ]]
 	const canvas = document.querySelector( '#c' );
 	const renderer = new THREE.WebGLRenderer( { antialias: true, canvas } );
-
+	var cylinder = 0;
 	//#region [[ INITIAL SCENE SET UP ]]
 	//#region [[ DEFAULT CAMERA STATS ]] 
 	const fov = 40; // field of view
@@ -116,6 +116,43 @@ function main() {
 	}
 	//#endregion
 
+	//#region [[ TEXTURE LOADER ]]
+	// Texture Loader
+	const loader = new THREE.TextureLoader();
+	const first = [
+		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/1.png')}),
+		  new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+	];
+	const second = [
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/2.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+  	];
+	const third = [
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/3.png')}),
+		new THREE.MeshBasicMaterial({map: loadColorTexture('./textures/basse.png')}),
+	];
+	
+	function loadColorTexture( path ) {
+        const texture = loader.load( path );
+        texture.colorSpace = THREE.SRGBColorSpace;
+        //texture.minFilter = THREE.LinearMipmapLinearFilter;
+        return texture;
+      }
+
+	//#endregion
+
 	//#region [[ PRIMARY SHAPE LOADER ]]
 	{
 		//#region base box sizes
@@ -125,9 +162,9 @@ function main() {
 		
 		//#endregion
 		//#region base cylinder sizes
-		const cylinderHeight = 5;
-		const cylinderRadTop = 1;
-		const cylinderRadBot = 1;
+		const cylinderHeight = 2;
+		const cylinderRadTop = 10;
+		const cylinderRadBot = 10;
 		const cylinderSegFaces = 10;
 		//#endregion
 		//#region base cone sizes
@@ -138,20 +175,25 @@ function main() {
 		//#endregion
 
 		// make instances of all shapes and put them in this array
-		const shapes = [
-			makeCube(boxWidth+1,boxHeight,boxDepth+0.5,4,0.5,0xe3e2d4), // 3rd place
-			makeCube(boxWidth+1,boxHeight+1,boxDepth+0.5,-4,0.5,0xe3e2d4), // 2nd place
-			makeCube(boxWidth+1,boxHeight+2,boxDepth+0.5,0,0.5,0xe3e2d4), // 1st place
-			// makeInstance(cylinder, 0x8844aa, -4), // microphone
-			// makeInstance(cylinder, 0x8844aa, -4), // microphone
-			makeCone(coneRad,coneHeight,coneRadSeg,1,3, 0xc9c441), // trophy 
-		];
+	
+		const cube3 = makeCube(boxWidth+1,boxHeight,boxDepth+0.5,4,2.5,third); // 3rd place
+		const cube2 = makeCube(boxWidth+1,boxHeight+1,boxDepth+0.5,-4,2.5,second); // 2nd place
+		const cube1 = makeCube(boxWidth+1,boxHeight+2,boxDepth+0.5,0,2.5,first); // 1st place
+		cylinder = makeCylinder(cylinderRadTop,cylinderRadBot,cylinderHeight,cylinderSegFaces,0,0, 0x8844aa ); // microphone
+		const cone = makeCone(coneRad,coneHeight,coneRadSeg,1,+5, 0xc9c441); // trophy 
+
+		// Add cube and cone objects as children of the cylinder
+		cylinder.add(cube1);
+		cylinder.add(cube2);
+		cylinder.add(cube3);
+		cylinder.add(cone);
+
 		// create instances of cube objects
-		function makeCube(w, h, d, x, y, color) {
+		function makeCube(w, h, d, x, y, materials) {
 			// make dat cube 
 			const geometry = new THREE.BoxGeometry( w, h, d );
-			const material = new THREE.MeshPhongMaterial( { color } );
-			const cube = new THREE.Mesh(geometry, material);
+			//const material = new THREE.MeshPhongMaterial( { color } );
+			const cube = new THREE.Mesh(geometry, materials);
 			// add shape to the scene
 			scene.add(cube);
 			cube.position.x = x;
@@ -179,9 +221,7 @@ function main() {
 			// add shape to the scene
 			scene.add(cone);
 			cone.position.x = x;
-			cone.position.y = y
-			cones.push(cone);
-			
+			cone.position.y = y		
 			return cone;
 		}
 	}
@@ -197,8 +237,9 @@ function main() {
 			const objLoader = new OBJLoader();
 			objLoader.setMaterials( mtl );
 			objLoader.load( 'obj/froggy.obj', ( root ) => {
-			root.position.y += 2;
+			root.position.y += 4;			
 			scene.add( root );
+			cylinder.add(root);
 			//root.posiiton.z +=3;
 			// compute the box that contains all the stuff
 			// from root and below
@@ -225,9 +266,10 @@ function main() {
 			const objLoader = new OBJLoader();
 			objLoader.setMaterials( mtl );
 			objLoader.load( 'obj/froggy2.obj', ( root ) => {
-				root.position.y += 1.5;
-				root.position.x -=4;
+				root.position.y += 3.5;
+				root.position.x -=4;	
 				scene.add( root );
+				cylinder.add(root);
 			} );
 		} );
 
@@ -239,9 +281,10 @@ function main() {
 			const objLoader = new OBJLoader();
 			objLoader.setMaterials( mtl );
 			objLoader.load( 'obj/froggy3.obj', ( root ) => {
-				root.position.y += 1;
+				root.position.y += 3;
 				root.position.x +=4;
 				scene.add( root );
+				cylinder.add(root);
 			} );
 		} );
 	}
@@ -278,15 +321,8 @@ function main() {
 
 		}
 
-        // // rotating the cubs
-		cones.forEach( ( cone, ndx ) => {
-
-			const speed = .2 + ndx * .1;
-			const rot = time * speed;
-			//cone.rotation.x = rot;
-			cone.rotation.y = rot;
-
-		} );
+		// ADD ROTATING CYLINDER HERE
+		cylinder.rotation.y += 0.01;
 
 		renderer.render( scene, camera );
 
